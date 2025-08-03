@@ -1,44 +1,46 @@
 import 'package:flutter/material.dart';
 
-final Color darkBackground = Color(0xFF18191A);
-final Color darkCardBackground = Color(0xFF23272A);
-final Color darkAccentYellow = Color(0xFFFFC300);
-final Color darkAccentGrey = Color(0xFFB0B3B8);
-final Color darkAccentWhite = Color(0xFFF5F6FA);
-final Color darkAccentBlue = Color(0xFF1976D2);
+const Color lightWhiteText = Color(0xFFF5F6FA); // Blanco claro para textos
+
+const Color darkBackground = Color(0xFF18191A);
+const Color darkCardBackground = Color(0xFF23272A);
+const Color darkAccentYellow = Color(0xFFFFC300);
+const Color darkAccentGrey = Color(0xFFB0B3B8);
+const Color darkAccentWhite = lightWhiteText;
+const Color darkAccentBlue = Color(0xFF1976D2);
 
 final ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
   scaffoldBackgroundColor: darkBackground,
   cardColor: darkCardBackground,
   primaryColor: darkAccentBlue,
-  appBarTheme: AppBarTheme(
+  appBarTheme: const AppBarTheme(
     backgroundColor: darkCardBackground,
-    iconTheme: const IconThemeData(color: Color(0xFFFFC300)),
-    titleTextStyle: const TextStyle(
-      color: Color(0xFFF5F6FA),
+    iconTheme: IconThemeData(color: darkAccentYellow),
+    titleTextStyle: TextStyle(
+      color: lightWhiteText,
       fontWeight: FontWeight.bold,
       fontSize: 24,
     ),
     elevation: 8,
   ),
-  colorScheme: ColorScheme.dark(
+  colorScheme: const ColorScheme.dark(
     primary: darkAccentBlue,
     secondary: darkAccentYellow,
     background: darkBackground,
     surface: darkCardBackground,
-    onPrimary: darkAccentWhite,
+    onPrimary: lightWhiteText,
     onSecondary: darkAccentGrey,
-    onBackground: darkAccentWhite,
-    onSurface: darkAccentWhite,
+    onBackground: lightWhiteText,
+    onSurface: lightWhiteText,
   ),
-  iconTheme: const IconThemeData(color: Color(0xFFFFC300)),
+  iconTheme: const IconThemeData(color: darkAccentYellow),
   textTheme: const TextTheme(
-    bodyLarge: TextStyle(color: Color(0xFFF5F6FA)),
-    bodyMedium: TextStyle(color: Color(0xFFF5F6FA)),
+    bodyLarge: TextStyle(color: lightWhiteText),
+    bodyMedium: TextStyle(color: lightWhiteText),
     titleLarge: TextStyle(
-        fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFFF5F6FA)),
-    titleMedium: TextStyle(fontSize: 18, color: Color(0xFFF5F6FA)),
+        fontSize: 24, fontWeight: FontWeight.bold, color: lightWhiteText),
+    titleMedium: TextStyle(fontSize: 18, color: lightWhiteText),
   ),
 );
 

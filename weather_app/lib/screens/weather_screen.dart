@@ -1,7 +1,4 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import '../themes/dark_theme.dart';
 import 'package:provider/provider.dart';
 import '../providers/weather_provider.dart';
 import '../widgets/hourly_forecast_list.dart';
@@ -48,127 +45,119 @@ class WeatherScreen extends StatelessWidget {
           final current = clima.current;
           final currentIcon = 'assets/icons/${current.icon}.png';
 
-          final colorScheme = Theme.of(context).colorScheme;
-          return Scaffold(
-            appBar: PreferredSize(
-              preferredSize: const Size.fromHeight(70),
-              child: AppBar(
-                automaticallyImplyLeading: false,
-                elevation: 8,
-                flexibleSpace: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [colorScheme.primary, colorScheme.secondary],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
+          final appBarColor = Theme.of(context).appBarTheme.backgroundColor ??
+              Theme.of(context).colorScheme.primary;
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              final isWide = constraints.maxWidth > 600;
+              final tempFontSize = isWide ? 44.0 : 66.0;
+              final iconSize = isWide ? 70.0 : 100.0;
+              final titleFontSize = isWide ? 18.0 : 22.0;
+              final descFontSize = isWide ? 16.0 : 20.0;
+              final padding = isWide ? 32.0 : 16.0;
+              return Scaffold(
+                appBar: PreferredSize(
+                  preferredSize: const Size.fromHeight(70),
+                  child: AppBar(
+                    automaticallyImplyLeading: false,
+                    elevation: 8,
+                    backgroundColor: appBarColor,
+                    title: const Text(
+                      'Clima',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                        letterSpacing: 1.2,
+                      ),
                     ),
-                    borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(24),
-                      bottomRight: Radius.circular(24),
-                    ),
+                    actions: [
+                      if (themeSwitch != null)
+                        Padding(
+                          padding: const EdgeInsets.only(right: 12.0),
+                          child: themeSwitch,
+                        ),
+                    ],
+                    centerTitle: true,
                   ),
                 ),
-                title: const Text(
-                  'Clima',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24,
-                    letterSpacing: 1.2,
-                    shadows: [
-                      Shadow(
-                        color: Colors.black26,
-                        blurRadius: 4,
-                        offset: Offset(0, 2),
+                body: SingleChildScrollView(
+                  padding: EdgeInsets.all(padding),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        ciudad.ciudad,
+                        style: TextStyle(
+                            fontSize: titleFontSize,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        DateTime.fromMillisecondsSinceEpoch(current.dt * 1000)
+                            .toLocal()
+                            .toString()
+                            .split(" ")[0],
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                      Text(
+                        DateTime.fromMillisecondsSinceEpoch(current.dt * 1000)
+                            .toLocal()
+                            .toString()
+                            .split(" ")[1]
+                            .substring(0, 5),
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        children: [
+                          Image.asset(currentIcon,
+                              width: iconSize, height: iconSize),
+                          const SizedBox(width: 12),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${current.temp.round()}°',
+                                style: TextStyle(
+                                  fontSize: tempFontSize,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                '${current.description[0].toUpperCase()}${current.description.substring(1)}',
+                                style: TextStyle(fontSize: descFontSize),
+                              ),
+                              Text(
+                                  'Sensación térmica ${current.feelsLike.round()}°'),
+                            ],
+                          )
+                        ],
+                      ),
+                      // Pronóstico por hora (scroll horizontal)
+                      const SizedBox(height: 20),
+                      const Text('Pronóstico por hora',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      HourlyForecastList(hourly: clima.hourly),
+
+                      // Pronóstico diario (scroll vertical)
+                      const SizedBox(height: 20),
+                      const Text('Pronóstico semanal',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      DailyForecastList(daily: clima.daily),
+                      // Destacados del clima
+                      const SizedBox(height: 20),
+                      WeatherHighlights(
+                        humidity: current.humidity,
+                        windSpeed: current.windSpeed,
+                        uvIndex: current.uvi.round(),
+                        uvLabel: _uvLabel(current.uvi),
+                        sunrise: _formatHour(current.sunrise),
+                        sunset: _formatHour(current.sunset),
                       ),
                     ],
                   ),
                 ),
-                actions: [
-                  if (themeSwitch != null)
-                    Padding(
-                      padding: const EdgeInsets.only(right: 12.0),
-                      child: themeSwitch,
-                    ),
-                ],
-                centerTitle: true,
-                backgroundColor: Colors.transparent,
-              ),
-            ),
-            body: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Ciudad: ${ciudad.ciudad}',
-                    style: const TextStyle(
-                        fontSize: 22, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    'Fecha: ${DateTime.fromMillisecondsSinceEpoch(current.dt * 1000).toLocal().toString().split(" ")[0]}',
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  Text(
-                    'Hora: ${DateTime.fromMillisecondsSinceEpoch(current.dt * 1000).toLocal().toString().split(" ")[1].substring(0, 5)}',
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Image.asset(currentIcon, width: 80, height: 80),
-                      const SizedBox(width: 12),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Ahora: ${current.description}',
-                              style: const TextStyle(fontSize: 20)),
-                          Text('Temperatura: ${current.temp.round()}°C'),
-                          Text(
-                              'Sensación térmica: ${current.feelsLike.round()}°C'),
-                        ],
-                      )
-                    ],
-                  ),
-                  // Pronóstico por hora (scroll horizontal)
-                  const SizedBox(height: 20),
-                  const Text('Pronóstico por hora:',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  HourlyForecastList(hourly: clima.hourly),
-
-                  // Pronóstico diario (scroll vertical)
-                  const SizedBox(height: 20),
-                  const Text('Pronóstico semanal:',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  DailyForecastList(daily: clima.daily),
-                  // Destacados del clima
-                  const SizedBox(height: 20),
-                  WeatherHighlights(
-                    humidity: current.humidity,
-                    windSpeed: current.windSpeed,
-                    uvIndex: current.uvi.round(),
-                    uvLabel: _uvLabel(current.uvi),
-                    sunrise: _formatHour(current.sunrise),
-                    sunset: _formatHour(current.sunset),
-                  ),
-
-                  // Alertas (si existen)
-                  if (clima.alerts.isNotEmpty) ...[
-                    const SizedBox(height: 20),
-                    const Text('Alertas climáticas:',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.red)),
-                    ...clima.alerts.map((a) => Card(
-                          color: Colors.red[50],
-                          child: ListTile(
-                            title: Text(a.event),
-                            subtitle: Text(a.description ?? 'Sin descripción'),
-                          ),
-                        )),
-                  ],
-                ],
-              ),
-            ),
+              );
+            },
           );
         },
       ),

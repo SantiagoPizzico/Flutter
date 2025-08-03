@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../themes/dark_theme.dart';
+
 
 class ForecastCard extends StatelessWidget {
   final String iconPath;
@@ -45,7 +45,7 @@ class ForecastCard extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.water_drop, color: Colors.lightBlueAccent, size: 20),
+                const Icon(Icons.water_drop, color: Colors.lightBlueAccent, size: 20),
                 const SizedBox(width: 4),
                 Text(
                   humidity,

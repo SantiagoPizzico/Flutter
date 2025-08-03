@@ -4,7 +4,7 @@ import '../models/weather.dart';
 import '../models/city.dart';
 
 class ClimaService {
-  final String baseUrl = 'http://localhost:3000/api/v1/clima';
+  final String baseUrl = 'https://api-express-blgs.onrender.com/api/v1/clima';
 
   Future<ClimaResponse> getClimaPorUbicacion(double lat, double lon) async {
     final url = Uri.parse('$baseUrl/actual/ubicacion?lat=$lat&lon=$lon');

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../themes/dark_theme.dart';
 
 class HourlyForecastList extends StatelessWidget {
   final List<dynamic> hourly;
@@ -13,17 +12,18 @@ class HourlyForecastList extends StatelessWidget {
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         primary: false,
-        itemCount: hourly.length,
+        itemCount: hourly.length > 24 ? 24 : hourly.length,
         itemBuilder: (context, index) {
           final h = hourly[index];
           final dt = DateTime.fromMillisecondsSinceEpoch(h.dt * 1000);
           final hIcon = 'assets/icons/${h.icon}.png';
+          final cardColor = Theme.of(context).cardColor;
           return Container(
             width: 100,
             margin: const EdgeInsets.all(8),
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
+              color: cardColor,
               borderRadius: BorderRadius.circular(16),
               boxShadow: const [
                 BoxShadow(

@@ -21,7 +21,7 @@ class DailyForecastList extends StatelessWidget {
           title: '${dt.day}/${dt.month} - ${d.description}',
           subtitle: 'Mín: ${d.min.round()}°C | Máx: ${d.max.round()}°C',
           humidity: '${d.humidity}%',
-          windSpeed: '${d.windSpeed} m/s',
+          windSpeed: '${(d.windSpeed * 3.6).round()} Km/h',
         );
       },
     );

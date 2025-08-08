@@ -14,11 +14,7 @@
 1. **Clona el repositorio:**
 	```bash
 	git clone https://github.com/SantiagoPizzico/Flutter.git
-<<<<<<< HEAD
 	cd ./weather_app
-=======
-	cd Flutter/weather_app
->>>>>>> 627d080f1ce2648610d9efaa908016395b341a8e
 	```
 
 2. **Instala dependencias:**

@@ -8,7 +8,7 @@ import '../widgets/weather_highlights.dart';
 class WeatherScreen extends StatelessWidget {
   final Widget? themeSwitch;
 
-  const WeatherScreen({Key? key, this.themeSwitch}) : super(key: key);
+  const WeatherScreen({super.key, this.themeSwitch});
   String _uvLabel(double uvi) {
     if (uvi < 3) return 'Bajo';
     if (uvi < 6) return 'Moderado';
@@ -55,23 +55,6 @@ class WeatherScreen extends StatelessWidget {
               final titleFontSize = isWide ? 22.0 : 18.0;
               final descFontSize = isWide ? 20.0 : 16.0;
               final padding = isWide ? 32.0 : 16.0;
-              final ciudadWidget = Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Flexible(
-                    child: Text(
-                      ciudad.ciudad,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: titleFontSize,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  const Icon(Icons.location_on, size: 22),
-                  const SizedBox(width: 4),
-                ],
-              );
               final fecha =
                   DateTime.fromMillisecondsSinceEpoch(current.dt * 1000)
                       .toLocal();

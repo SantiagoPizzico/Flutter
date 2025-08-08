@@ -16,6 +16,25 @@ class WeatherProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          clima = null;
+          ciudad = null;
+          loading = false;
+          notifyListeners();
+          return;
+        }
+      }
+      if (permission == LocationPermission.deniedForever) {
+        clima = null;
+        ciudad = null;
+        loading = false;
+        notifyListeners();
+        return;
+      }
+      // Si llegaste aquí, tienes permiso
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
@@ -27,7 +46,6 @@ class WeatherProvider extends ChangeNotifier {
     } catch (e) {
       clima = null;
       ciudad = null;
-      print('Error fetching weather data: $e');
     } finally {
       loading = false;
       notifyListeners();

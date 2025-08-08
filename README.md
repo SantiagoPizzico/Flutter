@@ -13,8 +13,8 @@
 
 1. **Clona el repositorio:**
 	```bash
-	git clone https://github.com/SantiagoPizzico/Final-labo-IV.git
-	cd Final-labo-IV/Flutter/weather_app
+	git clone https://github.com/SantiagoPizzico/Flutter.git
+	cd ./weather_app
 	```
 
 2. **Instala dependencias:**

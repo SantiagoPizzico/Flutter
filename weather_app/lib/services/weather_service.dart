@@ -8,7 +8,7 @@ class ClimaService {
 
   Future<ClimaResponse> getClimaPorUbicacion(double lat, double lon) async {
     final url = Uri.parse('$baseUrl/actual/ubicacion?lat=$lat&lon=$lon');
-    final response = await http.get(url);
+    final response = await http.get(url).timeout(const Duration(seconds: 10));
     if (response.statusCode == 200) {
       return ClimaResponse.fromJson(json.decode(response.body));
     } else {
@@ -18,7 +18,7 @@ class ClimaService {
 
   Future<CiudadResponse> getCiudadPorUbicacion(double lat, double lon) async {
     final url = Uri.parse('$baseUrl/ciudad/ubicacion?lat=$lat&lon=$lon');
-    final response = await http.get(url);
+    final response = await http.get(url).timeout(const Duration(seconds: 10));
     if (response.statusCode == 200) {
       return CiudadResponse.fromJson(json.decode(response.body));
     } else {
